@@ -15,13 +15,12 @@ import ru.iteco.fmhandroid.R;
 
 public class AboutPage {
 
-    private static final int ID_ABOUT_VERSION_TITLE_TEXT_VIEW = R.id.about_version_title_text_view;
+    private final int ID_ABOUT_VERSION_TITLE_TEXT_VIEW = R.id.about_version_title_text_view;
 
-    private static final ViewInteraction textVersion =
-            onView(allOf(withId(ID_ABOUT_VERSION_TITLE_TEXT_VIEW), withText(VERSION)));
+    private final ViewInteraction textVersion = onView(allOf(withId(ID_ABOUT_VERSION_TITLE_TEXT_VIEW), withText(VERSION)));
 
 
-    public static void checkTextVersion() {
+    public void checkTextVersion() {
         Allure.step("Проверить наличие текста 'Версия'");
         textVersion.check(matches(isDisplayed()));
     }

@@ -3,17 +3,15 @@ package ru.iteco.fmhandroid.ui.test;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import io.qameta.allure.android.runners.AllureAndroidJUnit4;
 import io.qameta.allure.kotlin.Description;
 import io.qameta.allure.kotlin.Story;
-import io.qameta.allure.android.runners.AllureAndroidJUnit4;
 import io.qameta.allure.kotlin.junit4.DisplayName;
-
 import ru.iteco.fmhandroid.ui.AppActivity;
 import ru.iteco.fmhandroid.ui.help.Utils;
 import ru.iteco.fmhandroid.ui.page.AboutPage;
@@ -25,6 +23,13 @@ import ru.iteco.fmhandroid.ui.page.SidebarPage;
 @RunWith(AllureAndroidJUnit4.class)
 public class AdditionalTest {
 
+    AboutPage aboutPage = new AboutPage();
+    MainPage mainPage = new MainPage();
+    SidebarPage sidebarPage = new SidebarPage();
+    MissionPage missionPage = new MissionPage();
+    NewsPage newsPage = new NewsPage();
+    Utils utils = new Utils();
+
 
     @Rule
     public ActivityScenarioRule<AppActivity> mActivityScenarioRule =
@@ -35,14 +40,11 @@ public class AdditionalTest {
     @DisplayName("Настройка теста")
     @Description("Выполняется перед каждым тестом")
     public void setUp() {
-        Utils.autoAuthorization();
-    }
-
-    @After
-    @DisplayName("Закрыть приложение")
-    @Description("Выполняется после завершения теста")
-    public void tearDown() {
-        Utils.logOut();
+        try {
+            mainPage.authorizationImageButtonVisible();
+        } catch (Exception e) {
+            utils.autoAuthorization();
+        }
     }
 
 
@@ -50,18 +52,18 @@ public class AdditionalTest {
     @Story("С001")
     @DisplayName("Отображение тематических цитат во вкладке с цитатами")
     public void displayingThematicQuotesInQuotesTabTest() {
-        MainPage.clickButtonMission();
-        MissionPage.clickButtonMissionItem();
-        MissionPage.checkItemMission();
+        mainPage.clickButtonMission();
+        missionPage.clickButtonMissionItem();
+        missionPage.checkItemMission();
     }
 
     @Test
     @Story("L001")
     @DisplayName("Отображение информации о приложении")
     public void displayingApplicationInformationTest() {
-        SidebarPage.clickButtonMainMenu();
-        SidebarPage.clickMenuAbout();
-        AboutPage.checkTextVersion();
+        sidebarPage.clickButtonMainMenu();
+        sidebarPage.clickMenuAbout();
+        aboutPage.checkTextVersion();
 
     }
 
@@ -69,8 +71,8 @@ public class AdditionalTest {
     @Story("L004")
     @DisplayName("Переход во вкладку новости с  главной страницы")
     public void creationNewsInNewCategoryTest() {
-        MainPage.clickAllNews();
-        NewsPage.newsPageVisible();
+        mainPage.clickAllNews();
+        newsPage.newsPageVisible();
     }
 
 

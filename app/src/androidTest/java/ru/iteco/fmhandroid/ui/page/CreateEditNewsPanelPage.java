@@ -18,87 +18,89 @@ import ru.iteco.fmhandroid.ui.help.Utils;
 
 public class CreateEditNewsPanelPage {
 
-    private static final int ID_NEWS_ITEM_CATEGORY_TEXT_AUTO_COMPLETE_TEXT_VIEW = R.id.news_item_category_text_auto_complete_text_view;
-    private static final int ID_NEWS_ITEM_TITLE_TEXT_INPUT_EDIT_TEXT = R.id.news_item_title_text_input_edit_text;
-    private static final int ID_NEWS_ITEM_PUBLISH_DATE_TEXT_INPUT_EDIT_TEXT = R.id.news_item_publish_date_text_input_edit_text;
-    private static final int ID_BUTTON1 = android.R.id.button1;
-    private static final int ID_NEWS_ITEM_PUBLISH_TIME_TEXT_INPUT_EDIT_TEXT = R.id.news_item_publish_time_text_input_edit_text;
-    private static final int ID_NEWS_ITEM_DESCRIPTION_TEXT_INPUT_EDIT_TEXT = R.id.news_item_description_text_input_edit_text;
-    private static final int ID_SAVE_BUTTON = R.id.save_button;
-    private static final int ID_CANCEL_BUTTON = R.id.cancel_button;
-    private static final int ID_SWITCHER = R.id.switcher;
-    private static final int ID_MESSAGE = android.R.id.message;
+    Utils utils = new Utils();
 
-    private static final ViewInteraction categories = onView(withId(ID_NEWS_ITEM_CATEGORY_TEXT_AUTO_COMPLETE_TEXT_VIEW));
-    private static final ViewInteraction heading = onView(withId(ID_NEWS_ITEM_TITLE_TEXT_INPUT_EDIT_TEXT));
-    private static final ViewInteraction publicationDate = onView(withId(ID_NEWS_ITEM_PUBLISH_DATE_TEXT_INPUT_EDIT_TEXT));
-    private static final ViewInteraction buttonOk = onView(withId(ID_BUTTON1));
-    private static final ViewInteraction publicationTime = onView(withId(ID_NEWS_ITEM_PUBLISH_TIME_TEXT_INPUT_EDIT_TEXT));
-    private static final ViewInteraction description = onView(withId(ID_NEWS_ITEM_DESCRIPTION_TEXT_INPUT_EDIT_TEXT));
-    private static final ViewInteraction buttonSave = onView(withId(ID_SAVE_BUTTON));
-    private static final ViewInteraction buttonCancel = onView(withId(ID_CANCEL_BUTTON));
-    private static final ViewInteraction switcher = onView(withId(ID_SWITCHER));
-    private static final ViewInteraction cancellationMessage = onView(withId(ID_MESSAGE));
+    private final int ID_NEWS_ITEM_CATEGORY_TEXT_AUTO_COMPLETE_TEXT_VIEW = R.id.news_item_category_text_auto_complete_text_view;
+    private final int ID_NEWS_ITEM_TITLE_TEXT_INPUT_EDIT_TEXT = R.id.news_item_title_text_input_edit_text;
+    private final int ID_NEWS_ITEM_PUBLISH_DATE_TEXT_INPUT_EDIT_TEXT = R.id.news_item_publish_date_text_input_edit_text;
+    private final int ID_BUTTON1 = android.R.id.button1;
+    private final int ID_NEWS_ITEM_PUBLISH_TIME_TEXT_INPUT_EDIT_TEXT = R.id.news_item_publish_time_text_input_edit_text;
+    private final int ID_NEWS_ITEM_DESCRIPTION_TEXT_INPUT_EDIT_TEXT = R.id.news_item_description_text_input_edit_text;
+    private final int ID_SAVE_BUTTON = R.id.save_button;
+    private final int ID_CANCEL_BUTTON = R.id.cancel_button;
+    private final int ID_SWITCHER = R.id.switcher;
+    private final int ID_MESSAGE = android.R.id.message;
+
+    private final ViewInteraction categories = onView(withId(ID_NEWS_ITEM_CATEGORY_TEXT_AUTO_COMPLETE_TEXT_VIEW));
+    private final ViewInteraction heading = onView(withId(ID_NEWS_ITEM_TITLE_TEXT_INPUT_EDIT_TEXT));
+    private final ViewInteraction publicationDate = onView(withId(ID_NEWS_ITEM_PUBLISH_DATE_TEXT_INPUT_EDIT_TEXT));
+    private final ViewInteraction buttonOk = onView(withId(ID_BUTTON1));
+    private final ViewInteraction publicationTime = onView(withId(ID_NEWS_ITEM_PUBLISH_TIME_TEXT_INPUT_EDIT_TEXT));
+    private final ViewInteraction description = onView(withId(ID_NEWS_ITEM_DESCRIPTION_TEXT_INPUT_EDIT_TEXT));
+    private final ViewInteraction buttonSave = onView(withId(ID_SAVE_BUTTON));
+    private final ViewInteraction buttonCancel = onView(withId(ID_CANCEL_BUTTON));
+    private final ViewInteraction switcher = onView(withId(ID_SWITCHER));
+    private final ViewInteraction cancellationMessage = onView(withId(ID_MESSAGE));
 
 
-    public static void checkTextTitle(String title) {
+    public void checkTextTitle(String title) {
         Allure.step("Проверить текст уведомления");
         cancellationMessage.check(matches(withText(title)));
     }
 
 
-    public static void selectCategories() {
+    public void selectCategories() {
         Allure.step("Выбрать категорию");
         categories.check(matches(isDisplayed())).perform(click());
     }
 
-    public static void selectHeading(String fakeTitle) {
+    public void selectHeading(String fakeTitle) {
         Allure.step("Выбрать заголовок");
         heading.check(matches(isDisplayed()))
                 .perform(click(), clearText(), replaceText(fakeTitle), closeSoftKeyboard());
     }
 
-    public static void selectPublicationDate() {
+    public void selectPublicationDate() {
         Allure.step("Нажать на дату");
         publicationDate.check(matches(isDisplayed())).perform(click());
     }
 
-    public static void clickOk() {
+    public void clickOk() {
         Allure.step("Нажать ОК");
         buttonOk.check(matches(isDisplayed())).perform(click());
     }
 
-    public static void selectPublicationTime() {
+    public void selectPublicationTime() {
         Allure.step("Нажать на время");
         publicationTime.check(matches(isDisplayed())).perform(click());
     }
 
-    public static void selectDescription(String fakeDescription) {
+    public void selectDescription(String fakeDescription) {
         Allure.step("Ввести описание");
         description.check(matches(isDisplayed()))
                 .perform(click(), clearText(), replaceText(fakeDescription), closeSoftKeyboard());
     }
 
-    public static void clickButtonSave() {
+    public void clickButtonSave() {
         Allure.step("Нажать сохранить");
         buttonSave.check(matches(isDisplayed())).perform(click());
     }
 
-    public static void clickButtonCancel() {
+    public void clickButtonCancel() {
         Allure.step("Нажать отмена");
         buttonCancel.check(matches(isDisplayed())).perform(click());
     }
 
 
-    public static void clickSwitcher() {
+    public void clickSwitcher() {
         Allure.step("Нажать кнопку Активна/Не активна");
         switcher.check(matches(isDisplayed())).perform(click());
     }
 
 
-    public static String getPublicationDate() {
+    public String getPublicationDate() {
         Allure.step("Получить дату публикации");
-        return Utils.getText(publicationDate);
+        return utils.getText(publicationDate);
     }
 
 }

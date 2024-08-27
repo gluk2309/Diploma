@@ -16,19 +16,20 @@ import ru.iteco.fmhandroid.R;
 import ru.iteco.fmhandroid.ui.help.Utils;
 
 public class MissionPage {
+    Utils utils = new Utils();
 
-    private static final int ID_OUR_MISSION_ITEM_OPEN_CARD_IMAGE_BUTTON = R.id.our_mission_item_open_card_image_button;
+    private final int ID_OUR_MISSION_ITEM_OPEN_CARD_IMAGE_BUTTON = R.id.our_mission_item_open_card_image_button;
 
-    private static final ViewInteraction buttonMissionItem = onView(Utils.withIndex(withId(ID_OUR_MISSION_ITEM_OPEN_CARD_IMAGE_BUTTON), 0));
-    private static final ViewInteraction itemMission = onView(withText(containsString(TEXT_MISSION)));
+    private final ViewInteraction buttonMissionItem = onView(utils.withIndex(withId(ID_OUR_MISSION_ITEM_OPEN_CARD_IMAGE_BUTTON), 0));
+    private final ViewInteraction itemMission = onView(withText(containsString(TEXT_MISSION)));
 
 
-    public static void clickButtonMissionItem() {
+    public void clickButtonMissionItem() {
         Allure.step("Нажать кнопку раскрыть миссию");
         buttonMissionItem.perform(click());
     }
 
-    public static void checkItemMission() {
+    public void checkItemMission() {
         Allure.step("Проверить текст миссии");
         itemMission.check(matches(isDisplayed()));
 

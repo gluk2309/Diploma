@@ -16,12 +16,15 @@ import android.os.SystemClock;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.test.espresso.NoMatchingViewException;
+import androidx.test.espresso.PerformException;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.assertion.ViewAssertions;
 import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.espresso.util.HumanReadables;
 import androidx.test.espresso.util.TreeIterables;
 
 import junit.framework.AssertionFailedError;
@@ -31,48 +34,52 @@ import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 
+import java.util.concurrent.TimeoutException;
+
 import io.qameta.allure.kotlin.Allure;
 import ru.iteco.fmhandroid.ui.page.AuthorizationPage;
 import ru.iteco.fmhandroid.ui.page.MainPage;
 
 
 public class Utils {
+    AuthorizationPage authorizationPage = new AuthorizationPage();
+    MainPage mainPage = new MainPage();
 
-    private static ViewInteraction text(String text) {
+    private ViewInteraction text(String text) {
         return onView(withText(text));
     }
 
 
-    public static void autoAuthorization() {
+    public void autoAuthorization() {
 
         Allure.step("АвтоАвторизация");
-        AuthorizationPage.verifyRegistrationPage();
-        AuthorizationPage.enterLoginAndPassword(DEFAULT_LOGIN, DEFAULT_PASSWORD);
-        MainPage.authorizationImageButtonVisible();
+        authorizationPage.verifyRegistrationPage();
+        authorizationPage.enterLoginAndPassword(DEFAULT_LOGIN, DEFAULT_PASSWORD);
+        mainPage.authorizationImageButtonVisible();
 
     }
 
 
-    public static void logOut() {
+    public void logOut() {
 
         Allure.step("Нажать выход");
         try {
-            MainPage.clickAuthorizationImageButton();
-            MainPage.clickLogOutButton();
+            mainPage.clickAuthorizationImageButton();
+            mainPage.clickLogOutButton();
         } catch (AssertionFailedError e) {
-            MainPage.clickBackAboutPage();
-            MainPage.clickAuthorizationImageButton();
-            MainPage.clickLogOutButton();
+            mainPage.clickBackAboutPage();
+            mainPage.clickAuthorizationImageButton();
+            mainPage.clickLogOutButton();
         }
     }
 
-    public static void checkText(String text) {
+    public void checkText(String text) {
         Allure.step("Проверить ожидаемый текст");
         text(text).check(matches(isDisplayed()));
     }
 
 
-    public static void waitForErrorText(String text) {
+    public void waitForErrorText(String text) {
 
         Allure.step("Проверить текст ошибки");
 
@@ -100,7 +107,7 @@ public class Utils {
     }
 
 
-    public static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
+    public Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
         return new TypeSafeMatcher<View>() {
             int currentIndex = 0;
 
@@ -148,19 +155,31 @@ public class Utils {
 
                 do {
                     for (View child : TreeIterables.breadthFirstViewTraversal(view)) {
-                        if (matchId.matches(child) && matchDisplayed.matches(child)) {
-                            return;
+                        try {
+                            if (matchId.matches(child) && matchDisplayed.matches(child)) {
+                                return;
+                            }
+                        } catch (NoMatchingViewException e) {
+                            // Обработка исключения NoMatchingViewException
                         }
+
+                        uiController.loopMainThreadForAtLeast(50);
                     }
 
-                    uiController.loopMainThreadForAtLeast(50);
                 }
                 while (System.currentTimeMillis() < endTime);
+
+                // Если элемент не найден в течение заданного времени, бросить исключение TimeoutException
+                throw new PerformException.Builder()
+                        .withActionDescription(this.getDescription())
+                        .withViewDescription(HumanReadables.describe(view))
+                        .withCause(new TimeoutException())
+                        .build();
             }
         };
     }
 
-    public static String getText(ViewInteraction matcher) {
+    public String getText(ViewInteraction matcher) {
         final StringBuilder text = new StringBuilder();
         matcher.perform(new ViewAction() {
             @Override

@@ -23,21 +23,21 @@ import ru.iteco.fmhandroid.ui.help.Utils;
 
 public class AuthorizationPage {
 
-    private static final int ID_LOGIN_TEXT_INPUT_LAYOUT = R.id.login_text_input_layout;
-    private static final int ID_PASSWORD_TEXT_INPUT_LAYOUT = R.id.password_text_input_layout;
-    private static final int ID_ENTER_BUTTON = R.id.enter_button;
+    private final int ID_LOGIN_TEXT_INPUT_LAYOUT = R.id.login_text_input_layout;
+    private final int ID_PASSWORD_TEXT_INPUT_LAYOUT = R.id.password_text_input_layout;
+    private final int ID_ENTER_BUTTON = R.id.enter_button;
 
 
-    private static final ViewInteraction loginField = onView(allOf(withHint(TEXT_LOGIN),
+    private final ViewInteraction loginField = onView(allOf(withHint(TEXT_LOGIN),
             withParent(withParent(withId(ID_LOGIN_TEXT_INPUT_LAYOUT)))));
 
-    private static final ViewInteraction passwordField = onView(allOf(withHint(TEXT_PASSWORD),
+    private final ViewInteraction passwordField = onView(allOf(withHint(TEXT_PASSWORD),
             withParent(withParent(withId(ID_PASSWORD_TEXT_INPUT_LAYOUT)))));
 
-    private static final ViewInteraction enterButton = onView(withId(ID_ENTER_BUTTON));
+    private final ViewInteraction enterButton = onView(withId(ID_ENTER_BUTTON));
 
 
-    public static void enterLoginAndPassword(String login, String password) {
+    public void enterLoginAndPassword(String login, String password) {
 
         Allure.step("Ввести Логин");
         loginField.perform(replaceText(login), closeSoftKeyboard());
@@ -49,7 +49,7 @@ public class AuthorizationPage {
         enterButton.check(matches(isDisplayed())).perform(click());
     }
 
-    public static void verifyRegistrationPage() {
+    public void verifyRegistrationPage() {
 
         Allure.step("Проверка видимости полей Логин, Пароль и кнопки Войти");
         Utils.waitFor(ID_ENTER_BUTTON);
